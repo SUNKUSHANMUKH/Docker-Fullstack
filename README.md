@@ -1,102 +1,187 @@
-#**Docker**: 
+# 🚀 **Dockerized Full Stack Application**
 
-Pre Requisite:
-Docker Desktop is installed and running on your computer.
+This project demonstrates a complete **Dockerized full-stack application** consisting of a **PostgreSQL database**, a **Spring Boot backend**, and a **frontend (JS/HTML/CSS)** application — all managed through **Docker Compose**.
 
-Step#1: Start the application
-The application can simply be started by the following command:
+---
 
+## 🧩 **Prerequisites**
+
+Make sure you have the following installed and running on your system:
+- [Docker Desktop](https://www.docker.com/products/docker-desktop)
+- Docker Engine & Docker Compose
+
+---
+
+## ⚙️ **How to Run the Application**
+
+### **Step 1: Start the Application**
+
+Run the following command from the project root:
+
+```bash
 docker-compose up --build
-# Application can also be started in detatched mode:
-# docker-compose up --build -d
-The application will first spawn a container for postgres database.
-Once it is ready, the application will start the container for backend i.e. a java based springboot application.
-The docker system will wait until the healthcheck of springboot app passes and then will start the frontend application
-❗ The application is configured in such a way that re-running the docker-compose will clean up the data from the database.
+```
 
-Step#2: Access the application
-The application can be accessed via localhost from your browser. This will allow you to:
+Alternatively, you can start it in **detached mode** (runs in background):
 
-Test Connection: This tests the connection with backend. If this is successful, it means that both; the backend and the database are initialised correctly.
-Clear: This will clear the form on the frontend application.
-Auto Fill: This will autofill the form with some default values. It can be manually changed by editing the text fields.
-Submit: Submits the data present in the form and presents the result whether the request was successful or not. If the request was not successful, it gives the appropriate status code along with error message(s).
-View Data: Allows you to view what data exists in the database in tabular form.
-Step#3: Shut Down Application
-If you used
-
-docker-compose up --build
-then you can press CMD+C or CTRL+C to shut down the containers.
-
-If you started the application in detatched mode:
-
+```bash
 docker-compose up --build -d
-then you can shut down the containers using:
+```
 
+### 🧠 What Happens When You Run It
+
+1. Docker first spawns a container for the **PostgreSQL database**.  
+2. Once ready, it builds and starts the **Spring Boot backend** container.  
+3. Docker waits for the backend’s **healthcheck** to pass.  
+4. Finally, it launches the **frontend** container.  
+
+> ⚠️ **Note:** The application is configured such that re-running `docker-compose` will **clean up existing data** from the database.
+
+---
+
+## 🌐 **Step 2: Access the Application**
+
+After successful startup, open your browser and visit:
+
+👉 **http://localhost**
+
+### Available Actions:
+- **Test Connection:** Tests backend connection.  
+- **Clear:** Clears all form fields.  
+- **Auto Fill:** Fills form with default values (editable).  
+- **Submit:** Submits data and displays the success or failure message.  
+- **View Data:** Shows database contents in a tabular view.
+
+---
+
+## 🧹 **Step 3: Stop the Application**
+
+If you started it normally:
+```bash
+CTRL + C
+```
+
+If you started it in detached mode:
+```bash
 docker-compose down
-Alternatively, in either case - you can also shut down the containers by pressing the stop ( ⏹ ) button in the Docker Desktop app.
+```
 
-Code Structure
-The code structure looks like this:
+Alternatively, you can also **stop containers** directly from the Docker Desktop UI by pressing the **⏹ Stop** button.
 
-Docker
-|
-|___docker-compose.yml
-|
-|___backend/
-|   |_______<some backend code files>
-|   |_______backend.Dockerfile
-|
-|___frontend/
-|   |_______<JS, HTML & CSS files>
-|   |_______frontend.Dockerfile
-|
-|___database/
-|   |________1_init_db.sql
-|   |________database.Dockerfile
+---
 
-At the root, there is the docker-compose.yml which uses dockerfiles from backend, frontend and database.
+## 🗂️ **Project Structure**
 
-Al these dockerfiles contain specific instructions on how to run that particular app.
+```
+Docker/
+│
+├── docker-compose.yml
+│
+├── backend/
+│   ├── backend.Dockerfile
+│   └── <backend source code files>
+│
+├── frontend/
+│   ├── frontend.Dockerfile
+│   └── <JS, HTML & CSS files>
+│
+└── database/
+    ├── database.Dockerfile
+    └── 1_init_db.sql
+```
 
-Additional Testing
-You can test each of these applications individually as well.
+The root `docker-compose.yml` file orchestrates all three services using their respective Dockerfiles.
 
-1. Frontend App
-Accessible at localhost is a simple GUI which can be tested by clicking on the buttons with specific functions as described in previous sections.
+---
 
-2. Backend App
-The backend app is accessible at localhost:8080.
+## 🧪 **Testing Each Component Individually**
 
-Its health-check endpoint /ping can be accessed via browser or curl.
+### **1️⃣ Frontend**
+Accessible via:
+```
+http://localhost
+```
+You can interact with the buttons and verify UI functionality.
 
-# via CURL
+---
+
+### **2️⃣ Backend (Spring Boot App)**
+
+Base URL:
+```
+http://localhost:8080
+```
+
+#### 🔹 Health Check:
+```bash
 curl -f http://localhost:8080/ping
+```
 
-# See headers and more details
+To see detailed output:
+```bash
 curl -v -f http://localhost:8080/ping
-Create User: User can be created by using the POST /user endpoint.
+```
 
+#### 🔹 Create User:
+```bash
 curl -X POST http://localhost:8080/user \
 -H "Content-Type: application/json" \
--d '{"full_name":"Harry Potter", "email":"harry@potter.com", "phone_number": "4123567890"}'
-Getting user details: Similar to before, the user details can be fetched directly via curl or browser as well.
+-d '{"full_name":"Harry Potter", "email":"harry@potter.com", "phone_number":"4123567890"}'
+```
 
-# If there are no results, the response will be: []
+#### 🔹 Get All Users:
+```bash
 curl -f http://localhost:8080/user
-3. Access Postgres Directly
-The postgres instance running inside a container can be accessed and SQL queries can be run for testing.
+```
 
-Go to docker desktop, expand the running cluster in green. You will see a container for backend-database.
+If there are no results, response will be:
+```json
+[]
+```
 
-Click on it. It will take you to directly to the logs.
+---
 
-Go to "Exec" tab to access the terminal.
+### **3️⃣ Accessing PostgreSQL Directly**
 
-From here you can run the psql commands as described below
+1. Open **Docker Desktop**.  
+2. Expand the running stack and find the **backend-database** container.  
+3. Click on it → Open the **Exec** tab → Access terminal.  
 
-The following command can help you run SQL queries within the postgres docker container.
-
+Run:
+```bash
 psql backend_db -U user -w
-# IF prompt asks for password - enter "password" without quotes.
-select * from user_entity;
+```
+If prompted for password, enter:
+```
+password
+```
+
+Then execute SQL queries, for example:
+```sql
+SELECT * FROM user_entity;
+```
+
+---
+
+## 🧱 **Technology Stack**
+
+| Layer | Technology |
+|-------|-------------|
+| **Frontend** | HTML, CSS, JavaScript |
+| **Backend** | Java (Spring Boot) |
+| **Database** | PostgreSQL |
+| **Containerization** | Docker & Docker Compose |
+
+---
+
+## 💡 **Notes**
+
+- The Docker setup ensures proper container dependency (database → backend → frontend).  
+- You can modify environment variables like **POSTGRES_USER**, **POSTGRES_PASSWORD**, and **POSTGRES_DB** in `docker-compose.yml`.  
+- For production deployment, use **private Docker images** or an **internal registry** to protect credentials.
+
+---
+
+## 🧾 **License**
+
+This project is open-source and available under the [MIT License](LICENSE).
