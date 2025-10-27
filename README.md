@@ -1,10 +1,7 @@
-**Docker**: 
+#**Docker**: 
 
 Pre Requisite:
 Docker Desktop is installed and running on your computer.
-
-Tutorial 2: Docker Compose and Multiple Containers
-This tutorial gives an overview on how you can containerize multiple applications together with docker-compose.
 
 Step#1: Start the application
 The application can simply be started by the following command:
@@ -42,7 +39,7 @@ Alternatively, in either case - you can also shut down the containers by pressin
 Code Structure
 The code structure looks like this:
 
-CD_007_docker_2
+Docker
 |
 |___docker-compose.yml
 |
@@ -57,6 +54,7 @@ CD_007_docker_2
 |___database/
 |   |________1_init_db.sql
 |   |________database.Dockerfile
+
 At the root, there is the docker-compose.yml which uses dockerfiles from backend, frontend and database.
 
 Al these dockerfiles contain specific instructions on how to run that particular app.
